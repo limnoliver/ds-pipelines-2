@@ -14,15 +14,18 @@ packages:
 targets:
   all:
     depends: 3_visualize/out/figure_1.png
-
-  site_data:
-    command: download_nwis_data()
+    
+  site_nums: 
+    command: c(I(c("01427207", "01432160", "01435000", "01436690", "01466500")))
+    
+  1_fetch/out/site_data.rds:
+    command: download_nwis_data(site_nums = site_nums, file_out = target_name)
   
   1_fetch/out/site_info.csv:
-    command: nwis_site_info(fileout = '1_fetch/out/site_info.csv', site_data)
+    command: nwis_site_info(fileout = target_name, site_data = '1_fetch/out/site_data.rds')
 
   site_data_clean:
-    command: process_data(site_data)
+    command: process_data('1_fetch/out/site_data.rds')
 
   site_data_annotated:
     command: annotate_data(site_data_clean, site_filename = '1_fetch/out/site_info.csv')
