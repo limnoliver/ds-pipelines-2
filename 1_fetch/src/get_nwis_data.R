@@ -1,5 +1,5 @@
 
-download_nwis_data <- function(site_nums, file_out){
+download_nwis_data <- function(site_nums){
   
   # create the file names that are needed for download_nwis_site_data
   # tempdir() creates a temporary directory that is wiped out when you start a new R session; 
@@ -7,12 +7,11 @@ download_nwis_data <- function(site_nums, file_out){
 
   dat_out <- download_nwis_site_data(site_num = site_nums, parameterCd = '00010')
   
-  saveRDS(dat_out, file_out)
+  return(dat_out)
 }
 
-nwis_site_info <- function(fileout, site_data){
-  dat <- readRDS(site_data)
-  site_no <- unique(dat$site_no)
+nwis_site_info <- function(fileout, sites_in){
+  site_no <- unique(sites_in$site_no)
   site_info <- dataRetrieval::readNWISsite(site_no)
   write_csv(site_info, fileout)
 }

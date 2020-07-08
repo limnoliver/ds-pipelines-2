@@ -18,17 +18,18 @@ targets:
   site_nums: 
     command: c(I(c("01427207", "01432160", "01435000", "01436690", "01466500")))
     
-  1_fetch/out/site_data.rds:
-    command: download_nwis_data(site_nums = site_nums, file_out = target_name)
+  site_data:
+    command: download_nwis_data(site_nums = site_nums)
   
   1_fetch/out/site_info.csv:
-    command: nwis_site_info(fileout = target_name, site_data = '1_fetch/out/site_data.rds')
+    command: nwis_site_info(fileout = target_name, sites_in = site_data)
 
-  site_data_processed:
+  1_fetch/out/site_data_processed.csv:
     command: process_data(
       nwis_filename = '1_fetch/out/site_data.rds', 
-      site_filename = '1_fetch/out/site_info.csv')
+      site_filename = '1_fetch/out/site_info.csv',
+      out_filename = target_name)
 
   3_visualize/out/figure_1.png:
     command: plot_nwis_timeseries(fileout = '3_visualize/out/figure_1.png', 
-      site_data_processed)  
+      site_dat = '1_fetch/out/site_data_processed.csv')  

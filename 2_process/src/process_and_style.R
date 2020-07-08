@@ -1,4 +1,4 @@
-process_data <- function(nwis_filename, site_filename){
+process_data <- function(nwis_filename, site_filename, out_filename){
   dat <- readRDS(nwis_filename)
   site_info <- read_csv(site_filename)
   
@@ -8,6 +8,6 @@ process_data <- function(nwis_filename, site_filename){
     mutate(station_name = as.factor(station_nm)) %>%
     select(station_name, site_no, dateTime, water_temperature, latitude = dec_lat_va, longitude = dec_long_va)
   
-  return(nwis_data_clean)
+  write_csv(nwis_data_clean, out_filename)
 }
 
